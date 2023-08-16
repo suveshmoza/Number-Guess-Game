@@ -1,8 +1,11 @@
-import { TextInput, View, StyleSheet, Alert } from 'react-native';
-import PrimaryButton from '../components/PrimaryButton';
+import { TextInput, View, StyleSheet, Alert, Text } from 'react-native';
+import PrimaryButton from '../components/ui/PrimaryButton';
 import { useState } from 'react';
+import Colors from '../constants/colors';
+import Title from '../components/ui/Title';
+import Card from '../components/ui/Card';
 
-const StartGameScreen = () => {
+const StartGameScreen = ({ onPickNumber }) => {
 	const [enteredNumber, setEnteredNumber] = useState('');
 
 	const numberInputHandler = (enteredText) => {
@@ -21,25 +24,30 @@ const StartGameScreen = () => {
 			]);
 			return;
 		}
+		onPickNumber(chosenNumber);
 	};
 
 	return (
-		<View style={styles.inputContainer}>
-			<TextInput
-				style={styles.inputNumber}
-				maxLength={2}
-				keyboardType="number-pad"
-				value={enteredNumber}
-				onChangeText={numberInputHandler}
-			/>
-			<View style={styles.buttonsContainer}>
-				<View style={styles.buttonContainer}>
-					<PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+		<View style={styles.rootContainer}>
+			<Title>Guess the number</Title>
+			<Card>
+				<Text style={styles.instructionText}>Enter a number</Text>
+				<TextInput
+					style={styles.inputNumber}
+					maxLength={2}
+					keyboardType="number-pad"
+					value={enteredNumber}
+					onChangeText={numberInputHandler}
+				/>
+				<View style={styles.buttonsContainer}>
+					<View style={styles.buttonContainer}>
+						<PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+					</View>
+					<View style={styles.buttonContainer}>
+						<PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+					</View>
 				</View>
-				<View style={styles.buttonContainer}>
-					<PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-				</View>
-			</View>
+			</Card>
 		</View>
 	);
 };
@@ -47,27 +55,23 @@ const StartGameScreen = () => {
 export default StartGameScreen;
 
 const styles = StyleSheet.create({
-	inputContainer: {
-		justifyContent: 'center',
+	rootContainer: {
+		flex: 1,
+		marginTop: 100,
 		alignItems: 'center',
-		marginTop: 200,
-		marginHorizontal: 24,
-		padding: 16,
-		backgroundColor: '#3e0329',
-		borderRadius: 8,
-		elevation: 6,
-		shadowColor: 'black',
-		shadowOffset: { width: 0, height: 2 },
-		shadowRadius: 6,
-		shadowOpacity: 0.25,
+	},
+	instructionText: {
+		color: Colors.accent,
+		fontSize: 24,
+		fontWeight: 'bold',
 	},
 	inputNumber: {
 		height: 50,
 		width: 50,
 		fontSize: 32,
-		borderBottomColor: '#ddb52f',
+		borderBottomColor: Colors.accent,
 		borderBottomWidth: 2,
-		color: '#ddb52f',
+		color: Colors.accent,
 		marginVertical: 8,
 		fontWeight: 'bold',
 		textAlign: 'center',
